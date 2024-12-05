@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mobile_banking
+    username: root
+    password:
+
+
+  flyway:
+    enabled: true
+    url: jdbc:mysql://localhost:3306/mobile_banking
+    user: root
+    password:
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  mail:
+    username: boyup733@gmail.com
+    password: uhwb wvje cdiw ivvx
+    host: smtp.gmail.com
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    debug: true
