@@ -6,9 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.mobile_banking.domain.Role;
 import org.example.mobile_banking.domain.User;
 import org.example.mobile_banking.domain.UserVerification;
-import org.example.mobile_banking.feature.auth.dto.RegisterRequest;
-import org.example.mobile_banking.feature.auth.dto.RegisterResponse;
-import org.example.mobile_banking.feature.auth.dto.VerificationRequest;
+import org.example.mobile_banking.feature.auth.dto.*;
 import org.example.mobile_banking.feature.user.RoleRepository;
 import org.example.mobile_banking.feature.user.UserRepository;
 import org.example.mobile_banking.mapper.UserMapper;
@@ -143,6 +141,12 @@ public class AuthServiceImp implements AuthService {
         userVerificationRepository.delete(userVerification);
 
 
+    }
+
+    @Override
+    public AuthResponse login(LoginRequest loginRequest) {
+        
+        return null;
     }
 
 }
