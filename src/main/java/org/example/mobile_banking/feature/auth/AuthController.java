@@ -3,10 +3,7 @@ package org.example.mobile_banking.feature.auth;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.mobile_banking.feature.auth.dto.RegisterRequest;
-import org.example.mobile_banking.feature.auth.dto.RegisterResponse;
-import org.example.mobile_banking.feature.auth.dto.SendVerificationRequest;
-import org.example.mobile_banking.feature.auth.dto.VerificationRequest;
+import org.example.mobile_banking.feature.auth.dto.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +36,16 @@ public class AuthController {
     @PostMapping("/verify")
     void verify(@Valid @RequestBody VerificationRequest verificationRequest){
         authService.verify(verificationRequest);
+    }
+
+    @PostMapping("/login")
+    AuthResponse login(@Valid @RequestBody LoginRequest loginRequest){
+        return authService.login(loginRequest);
+    }
+
+    @PostMapping("/refresh-token")
+    AuthResponse refreshToken(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest){
+        return authService.refreshToken(refreshTokenRequest);
     }
 
 
