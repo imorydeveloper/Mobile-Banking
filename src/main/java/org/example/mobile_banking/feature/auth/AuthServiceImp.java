@@ -170,4 +170,9 @@ public class AuthServiceImp implements AuthService {
 
     }
 
+    @Override
+    public AuthResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
+        return null;
+    }
+
 }

@@ -9,4 +9,5 @@ public interface AuthService {
     void resendVerification(String email) throws MessagingException;
     void verify(VerificationRequest verificationRequest);
     AuthResponse login(LoginRequest loginRequest);
+    AuthResponse refreshToken(RefreshTokenRequest refreshTokenRequest);
 }
