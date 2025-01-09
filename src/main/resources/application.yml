@@ -4,7 +4,10 @@ spring:
     url: jdbc:mysql://localhost:3306/mobile_banking
     username: root
     password:
-
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 10MB
 
   flyway:
     enabled: true
@@ -13,6 +16,10 @@ spring:
     password:
     locations: classpath:db/migration
     baseline-on-migrate: true
+
+  file-server:
+    server-path: D:/pic/
+    base-url: http://localhost:8080/upload/
 
   mail:
     username: boyup733@gmail.com

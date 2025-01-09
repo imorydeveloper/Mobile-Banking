@@ -3,6 +3,7 @@ package org.example.mobile_banking.feature.auth;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.mobile_banking.domain.Role;
 import org.example.mobile_banking.domain.User;
 import org.example.mobile_banking.domain.UserVerification;
@@ -15,17 +16,32 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
+import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthenticationToken;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationProvider;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthServiceImp implements AuthService {
 
     private  final UserRepository userRepository;
@@ -34,6 +50,12 @@ public class AuthServiceImp implements AuthService {
     private final RoleRepository roleRepository;
     private final JavaMailSender javaMailSender;
     private final UserVerificationRepository userVerificationRepository;
+    private final DaoAuthenticationProvider daoAuthenticationProvider;
+    private final JwtEncoder accessTokenJwtEncoder;
+    private final JwtEncoder refreshTokenJwtEncoder;
+    private final JwtAuthenticationProvider jwtAuthenticationProvider;
+
+
 
     //Inject email
     @Value("${spring.mail.username}")
@@ -131,7 +153,7 @@ public class AuthServiceImp implements AuthService {
         // validate email
         User user = userRepository.findByEmail(verificationRequest.email()).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND,"User email has not been found"));
         //validate verified code
-         UserVerification userVerification = userVerificationRepository.findByUserAndVerifiedCode(user, verificationRequest.verifiedCode()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"User verification has not been found"));
+        UserVerification userVerification = userVerificationRepository.findByUserAndVerifiedCode(user, verificationRequest.verifiedCode()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"User verification has not been found"));
         // Is verify code expired?
         if(LocalTime.now().isAfter(userVerification.getExpiryTime())){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Verify code has expired");
@@ -145,8 +167,7 @@ public class AuthServiceImp implements AuthService {
 
     @Override
     public AuthResponse login(LoginRequest loginRequest) {
-        
-        return null;
+
     }
 
 }
